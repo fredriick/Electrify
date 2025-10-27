@@ -1,6 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { SellerLoginModal } from '@/components/auth/SellerLoginModal';
 import { SellerRegisterModal } from '@/components/auth/SellerRegisterModal';
@@ -48,7 +50,16 @@ export default function SellPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 p-4 relative">
+      {/* Back Button - Outside card, always visible */}
+      <Link 
+        href="/"
+        className="absolute top-4 left-4 sm:top-6 sm:left-6 inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors z-10"
+      >
+        <ArrowLeft className="w-5 h-5" />
+        <span className="font-medium">Back</span>
+      </Link>
+
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 max-w-md w-full flex flex-col items-center">
         <h1 className="text-3xl font-bold mb-4 text-center text-gray-900 dark:text-white">Sell on ElectrifyShop</h1>
         {!loading && user && profile ? (

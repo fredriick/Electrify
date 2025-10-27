@@ -41,23 +41,25 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
       />
       
       {/* Modal */}
-      <div className="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+      <div className="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md mx-4 max-h-[90vh] flex flex-col">
+        {/* Sticky Header */}
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0 sticky top-0 bg-white dark:bg-gray-800 z-10 rounded-t-xl">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
             {title}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors ml-2"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
         
-        {/* Content */}
-        <div className="p-6">
-          {children}
+        {/* Scrollable Content */}
+        <div className="overflow-y-auto flex-1">
+          <div className="p-4 sm:p-6">
+            {children}
+          </div>
         </div>
       </div>
     </div>

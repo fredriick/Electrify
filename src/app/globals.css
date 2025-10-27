@@ -53,8 +53,26 @@
   * {
     @apply border-gray-200 dark:border-gray-700;
   }
+  
+  /* Prevent horizontal overflow on mobile */
+  html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+  
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Prevent images and other elements from causing horizontal overflow */
+  img, video, svg, canvas {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Ensure all containers respect viewport width */
+  .container, .mx-auto, [class*="max-w"] {
+    max-width: 100%;
   }
   
   /* Ensure select dropdowns open downward */

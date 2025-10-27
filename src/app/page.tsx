@@ -704,8 +704,8 @@ export default function HomePage() {
               {/* Products Grid */}
               <div className="lg:col-span-3">
                 {/* Sort and Results */}
-                <div className="flex items-center justify-between mb-6">
-                  <p className="text-gray-600 dark:text-gray-300">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                  <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
                     Showing {displayedProducts.length} of {filteredProducts.length} products
                     {activeFilterCount > 0 && (
                       <span className="ml-2 text-primary-600 dark:text-primary-400">
@@ -718,7 +718,7 @@ export default function HomePage() {
                       </span>
                     )}
                   </p>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
                     <button
                       onClick={() => setShowFilters(!showFilters)}
                       className="lg:hidden flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
@@ -745,17 +745,20 @@ export default function HomePage() {
                         <List className="w-4 h-4" />
                       </button>
                     </div>
-                    <select
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
-                      className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    >
-                      <option value="featured">Featured</option>
-                      <option value="price_low">Price: Low to High</option>
-                      <option value="price_high">Price: High to Low</option>
-                      <option value="rating">Highest Rated</option>
-                      <option value="newest">Newest</option>
-                    </select>
+                    <div className="relative">
+                      <select
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value)}
+                        className="border border-gray-300 dark:border-gray-600 rounded-lg pl-3 pr-10 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white appearance-none cursor-pointer w-full"
+                      >
+                        <option value="featured">Featured</option>
+                        <option value="price_low">Price: Low to High</option>
+                        <option value="price_high">Price: High to Low</option>
+                        <option value="rating">Highest Rated</option>
+                        <option value="newest">Newest</option>
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 pointer-events-none w-4 h-4" />
+                    </div>
                   </div>
                 </div>
 

@@ -28,6 +28,18 @@ export default function CustomersPage() {
   const [error, setError] = useState<string | null>(null);
 
   const { user, loading: authLoading } = useAuth();
+  // Force grid view on small screens and keep list for md+
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window !== 'undefined' && window.innerWidth < 768 && viewMode === 'list') {
+        setViewMode('grid');
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [viewMode]);
 
   useEffect(() => {
     const fetchCustomersData = async () => {
@@ -195,17 +207,17 @@ export default function CustomersPage() {
       <div>
         {/* Page Header */}
         <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <div className="flex-1">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Customers</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1">Manage and view your customer information</p>
             </div>
-            <div className="flex items-center gap-3">
-              {/* View Toggle */}
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+              {/* View Toggle - hide list on mobile */}
               <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2 rounded-lg ${viewMode === 'list' ? 'bg-white dark:bg-gray-800 shadow text-blue-600' : 'text-gray-500 dark:text-gray-300'}`}
+                  className={`p-2 rounded-lg hidden md:inline-flex ${viewMode === 'list' ? 'bg-white dark:bg-gray-800 shadow text-blue-600' : 'text-gray-500 dark:text-gray-300'}`}
                   title="List View"
                 >
                   <LayoutList className="w-5 h-5" />
@@ -286,7 +298,7 @@ export default function CustomersPage() {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                   <input
                     type="text"
-                    placeholder="Search customers by name, email, or location..."
+                    placeholder="Search customers..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
@@ -295,11 +307,11 @@ export default function CustomersPage() {
               </div>
 
               {/* Status Filter */}
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap">
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as 'all' | 'active' | 'inactive')}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="px-3 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-sm sm:text-base"
                 >
                   <option value="all">All Status</option>
                   <option value="active">Active</option>
@@ -308,7 +320,7 @@ export default function CustomersPage() {
 
                 <button
                   onClick={exportCustomers}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center gap-2 transition-colors"
+                  className="px-3 sm:px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center gap-2 transition-colors text-sm sm:text-base whitespace-nowrap"
                 >
                   <Download className="w-4 h-4" />
                   Export

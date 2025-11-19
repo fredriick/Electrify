@@ -373,9 +373,9 @@ export default function SupplierDashboard() {
         </div>
 
         {/* Period Selector */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div className="flex items-center gap-4">
-            <div className="relative w-44">
+            <div className="relative w-full sm:w-44">
               <select
                 value={selectedPeriod}
                 onChange={(e) => setSelectedPeriod(e.target.value)}
@@ -391,11 +391,11 @@ export default function SupplierDashboard() {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <button 
               onClick={refreshDashboard}
               disabled={loading}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+              className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm sm:text-base ${
                 loading 
                   ? 'bg-gray-400 cursor-not-allowed' 
                   : 'bg-gray-600 hover:bg-gray-700 text-white'
@@ -413,7 +413,7 @@ export default function SupplierDashboard() {
             <button 
               onClick={handleExportReport}
               disabled={exporting || !dashboardData}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+              className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm sm:text-base whitespace-nowrap ${
                 exporting || !dashboardData 
                   ? 'bg-gray-400 cursor-not-allowed' 
                   : 'bg-primary-600 hover:bg-primary-700 text-white'

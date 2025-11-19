@@ -106,8 +106,11 @@ const citiesByCountry: { [key: string]: string[] } = {
   ],
   // African Countries
   'Nigeria': [
-    'Lagos', 'Kano', 'Ibadan', 'Kaduna', 'Port Harcourt', 'Benin City', 'Maiduguri', 'Zaria', 'Aba', 'Jos',
-    'Ilorin', 'Oyo', 'Enugu', 'Abeokuta', 'Calabar', 'Uyo', 'Akure', 'Owerri', 'Katsina', 'Onitsha'
+    // All 36 States plus Federal Capital Territory (Abuja) - Alphabetically sorted
+    'Abia', 'Abuja', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno', 'Cross River',
+    'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano',
+    'Katsina', 'Kebbi', 'Kogi', 'Kwara', 'Lagos', 'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun',
+    'Oyo', 'Plateau', 'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara'
   ],
   'South Africa': [
     'Johannesburg', 'Cape Town', 'Durban', 'Pretoria', 'Port Elizabeth', 'Bloemfontein', 'East London', 'Kimberley', 'Nelspruit', 'Polokwane',

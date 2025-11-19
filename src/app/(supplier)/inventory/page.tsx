@@ -614,13 +614,29 @@ export default function InventoryPage() {
     }
   }, [user, profile]);
 
+  // Force grid view on mobile screens
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768 && viewMode === 'list') {
+        setViewMode('grid');
+      }
+    };
+
+    // Check on mount
+    handleResize();
+
+    // Listen for resize events
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [viewMode]);
+
   return (
     <DashboardLayout>
       <div className="p-6" onClick={() => setOpenDropdown(null)}>
         {/* Page Header */}
         <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <div className="flex-1">
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                 Inventory
               </h1>
@@ -628,8 +644,8 @@ export default function InventoryPage() {
                 Manage your product catalog and stock levels
               </p>
             </div>
-            <div className="flex items-center gap-3">
-              {/* View Toggle */}
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+              {/* View Toggle - List view hidden on mobile */}
               <div className="flex items-center bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-1">
                 <button
                   className={`p-2 rounded-md transition-colors ${
@@ -643,7 +659,7 @@ export default function InventoryPage() {
                   <Grid3X3 className="w-4 h-4" />
                 </button>
                 <button
-                  className={`p-2 rounded-md transition-colors ${
+                  className={`p-2 rounded-md transition-colors hidden md:block ${
                     viewMode === 'list' 
                       ? 'bg-primary-100 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400' 
                       : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
@@ -655,11 +671,12 @@ export default function InventoryPage() {
                 </button>
               </div>
               <button
-                className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                className="bg-primary-600 hover:bg-primary-700 text-white px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm sm:text-base whitespace-nowrap"
                 onClick={() => setShowAddModal(true)}
               >
                 <Plus className="w-4 h-4" />
-                Add Product
+                <span className="hidden sm:inline">Add Product</span>
+                <span className="sm:hidden">Add</span>
               </button>
             </div>
           </div>
@@ -1020,27 +1037,27 @@ export default function InventoryPage() {
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 dark:bg-gray-700">
+                <thead className="bg-gray-50 dark:bg-gray-700 hidden md:table-header-group">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Product
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden md:table-cell">
                       Category
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Price
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden md:table-cell">
                       Stock
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden lg:table-cell">
                       SKU
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
@@ -1048,12 +1065,12 @@ export default function InventoryPage() {
                 <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                   {filteredProducts.map((product) => (
                     <tr key={product.id} className={`hover:bg-gray-50 dark:hover:bg-gray-700 ${product.status === 'archived' ? 'opacity-75' : ''}`}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="flex-shrink-0 h-12 w-12 relative">
+                      <td className="px-3 sm:px-6 py-4">
+                        <div className="flex items-center min-w-0">
+                          <div className="flex-shrink-0 h-10 w-10 sm:h-12 sm:w-12 relative">
                             {product.image_url || (product.images && product.images[0]) ? (
                               <img 
-                                className="h-12 w-12 rounded-lg object-cover"
+                                className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg object-cover"
                                 src={product.image_url || (product.images && product.images[0])} 
                                 alt={product.name}
                                 onError={(e) => {
@@ -1073,41 +1090,41 @@ export default function InventoryPage() {
                               </div>
                             )}
                           </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900 dark:text-white">
+                          <div className="ml-2 sm:ml-4 min-w-0 flex-1">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white truncate">
                               {product.name}
                             </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                            <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate">
                               {product.brand}
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                        {product.category}
+                      <td className="px-3 sm:px-6 py-4 text-sm text-gray-900 dark:text-white hidden md:table-cell">
+                        <div className="truncate max-w-[100px]">{product.category}</div>
                       </td>
-                                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                      {formatCurrency(product.price)}
-                    </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                      <td className="px-3 sm:px-6 py-4 text-sm text-gray-900 dark:text-white">
+                        {formatCurrency(product.price)}
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 text-sm text-gray-900 dark:text-white hidden md:table-cell">
                         {product.stock_quantity}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-3 sm:px-6 py-4">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(getDisplayStatus(product))}`}>
-                          {getStatusIcon(getDisplayStatus(product))} {getDisplayStatus(product).replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                          {getStatusIcon(getDisplayStatus(product))} <span className="hidden sm:inline">{getDisplayStatus(product).replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
                         </span>
                         
                         {/* Show rejection reason for rejected products */}
                         {product.approval_status === 'rejected' && product.rejection_reason && (
-                          <div className="mt-1 text-xs text-red-600 dark:text-red-400">
+                          <div className="mt-1 text-xs text-red-600 dark:text-red-400 truncate max-w-[150px]">
                             ❌ {product.rejection_reason}
                           </div>
                         )}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {product.sku}
+                      <td className="px-3 sm:px-6 py-4 text-sm text-gray-500 dark:text-gray-400 hidden lg:table-cell">
+                        <div className="truncate max-w-[80px]">{product.sku}</div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <td className="px-3 sm:px-6 py-4 text-right text-sm font-medium">
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => handleDropdownAction('view', product)}

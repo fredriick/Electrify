@@ -84,7 +84,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'your-google-verification-code',
+    google: 'z58EkRLze3cS6wGndLfH9DnN3EKbscufla6yaNCtppo',
     yandex: 'your-yandex-verification-code',
     yahoo: 'your-yahoo-verification-code',
   },
@@ -104,18 +104,18 @@ export default function RootLayout({
         <link rel="icon" href="/favicon-32x32.png?v=1" type="image/png" sizes="32x32" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1" sizes="180x180" />
         <link rel="manifest" href="/site.webmanifest?v=1" />
-        
+
         {/* Theme colors */}
         <meta name="theme-color" content="#3b82f6" />
         <meta name="msapplication-TileColor" content="#3b82f6" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
-        
+
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="preconnect" href="https://s3.amazonaws.com" />
-        
+
         {/* Structured Data */}
         <script
           type="application/ld+json"

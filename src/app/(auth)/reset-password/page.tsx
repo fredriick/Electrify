@@ -2,19 +2,35 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
+import { Mail, ArrowLeft, CheckCircle, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
+import { authService } from '@/lib/auth';
 
 export default function ResetPasswordPage() {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement password reset logic
-    console.log('Password reset requested for:', email);
-    setIsSubmitted(true);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const { error: resetError } = await authService.resetPassword(email);
+
+      if (resetError) {
+        throw resetError;
+      }
+
+      setIsSubmitted(true);
+    } catch (err: any) {
+      setError(err.message || 'Failed to send reset link. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isSubmitted) {
@@ -45,13 +61,13 @@ export default function ResetPasswordPage() {
               <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
-              
+
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Reset Link Sent!
               </h2>
-              
+
               <p className="text-gray-600 dark:text-gray-300 mb-6">
-                We've sent a password reset link to <strong>{email}</strong>. 
+                We've sent a password reset link to <strong>{email}</strong>.
                 Please check your email and click the link to reset your password.
               </p>
 
@@ -115,6 +131,13 @@ export default function ResetPasswordPage() {
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8"
         >
           <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 flex items-center gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
+                <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+              </div>
+            )}
+
             {/* Email Field */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -144,9 +167,17 @@ export default function ResetPasswordPage() {
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors"
+              disabled={isLoading}
+              className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              Send Reset Link
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Sending...
+                </div>
+              ) : (
+                'Send Reset Link'
+              )}
             </Button>
           </form>
 
@@ -177,9 +208,4 @@ export default function ResetPasswordPage() {
       </div>
     </div>
   );
-} 
- 
- 
- 
- 
- 
+}

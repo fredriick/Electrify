@@ -29,9 +29,9 @@ export async function GET(request: NextRequest) {
 
   // First, check if user is already authenticated (from email verification)
   const { data: { user: existingUser } } = await supabase.auth.getUser();
-  
+
   if (existingUser) {
-    
+
     // Check if the user is a supplier and needs to be verified
     // First, try to find the user in each role-specific table
     let profile = null;
@@ -154,7 +154,7 @@ export async function GET(request: NextRequest) {
     try {
       // Exchange the code for a session
       const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-      
+
       if (error) {
         console.error('Error exchanging code for session:', error);
         return NextResponse.redirect(new URL('/login?error=verification_failed', requestUrl.origin));

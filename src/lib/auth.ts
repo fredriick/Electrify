@@ -514,7 +514,7 @@ export const authService = {
 
     try {
       const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: `${window.location.origin}/update-password`,
       })
       if (error) throw error
       return { error: null }
